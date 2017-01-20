@@ -28,4 +28,4 @@
 		<mapping class="com.softserve.lv219.hiberlibrary.entity.User" />
 	</session-factory>
 </hibernate-configuration>
-    
+   
