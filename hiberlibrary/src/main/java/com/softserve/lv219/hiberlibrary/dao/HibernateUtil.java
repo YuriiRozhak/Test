@@ -2,6 +2,13 @@ package com.softserve.lv219.hiberlibrary.dao;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+
+import com.softserve.lv219.hiberlibrary.entity.Author;
+import com.softserve.lv219.hiberlibrary.entity.Book;
+import com.softserve.lv219.hiberlibrary.entity.BookInstance;
+import com.softserve.lv219.hiberlibrary.entity.ReadSession;
+import com.softserve.lv219.hiberlibrary.entity.User;
+
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 public class HibernateUtil {
@@ -10,9 +17,15 @@ public class HibernateUtil {
     static {
         try {
             // Creates the session factory from hibernate.cfg.xml
-            configuration.configure();
+            configuration.addAnnotatedClass(Book.class)
+            .addAnnotatedClass(Author.class)
+            .addAnnotatedClass(BookInstance.class)
+            .addAnnotatedClass(ReadSession.class)
+            .addAnnotatedClass(User.class)
+            .configure();
             sessionFactory = configuration
-                    .buildSessionFactory(new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build());
+                    .buildSessionFactory(new StandardServiceRegistryBuilder().applySettings(configuration.getProperties())
+                    		.build());
         } catch (Exception e) {
             e.printStackTrace();
     }   }

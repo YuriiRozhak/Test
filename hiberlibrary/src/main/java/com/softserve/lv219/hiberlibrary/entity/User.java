@@ -11,6 +11,7 @@ import javax.persistence.Id;
 public class User {
 	
 	@Id
+	@Column(name = "IDUSER")
 	@GeneratedValue
 	private Integer id;
 

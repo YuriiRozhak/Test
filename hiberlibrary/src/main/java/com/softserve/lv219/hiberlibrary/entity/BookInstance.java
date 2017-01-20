@@ -3,15 +3,21 @@ package com.softserve.lv219.hiberlibrary.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class BookInstance {
 	@Id
-	@GeneratedValue
+	@Column(name = "IDBOOKINSTANCE")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
-	@Column
+	
+	@ManyToOne
+	@JoinColumn(name= "IDBOOK")
 	private Book book;
 	
 	public int getId() {

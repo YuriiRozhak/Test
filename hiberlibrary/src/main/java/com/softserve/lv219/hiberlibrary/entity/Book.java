@@ -1,27 +1,41 @@
 package com.softserve.lv219.hiberlibrary.entity;
 
 import java.sql.Date;
+import java.util.List;
 
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
-@Embeddable
+@Entity
 public class Book {
 	
 	@Id
-	@GeneratedValue
+	@Column(name = "IDBOOK")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 
 	@Column
 	private String name;
 
-	@Column
+	@ManyToOne
+	@JoinColumn(name= "IDAUTHOR")
 	private Author author;
 
 	@Column
-	private Author subauthor;
+	@ManyToMany(targetEntity = Author.class,
+    fetch = FetchType.LAZY)
+	@JoinTable(name="authorsbooks",
+    joinColumns={@JoinColumn(name="IDBOOK")},
+    inverseJoinColumns={@JoinColumn(name="IDAUTHOR")})
+	private List<Author> subauthors;
 
 	@Column
 	private Date publishDate;
@@ -45,11 +59,15 @@ public class Book {
 	public void setAuthor(Author author) {
 		this.author = author;
 	}
-	public Author getSubauthor() {
-		return subauthor;
+	
+	public List<Author> getSubauthors() {
+		return subauthors;
 	}
-	public void setSubauthor(Author subauthor) {
-		this.subauthor = subauthor;
+	public void setSubauthors(List<Author> subauthors) {
+		this.subauthors = subauthors;
+	}
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	public Date getPublishDate() {
 		return publishDate;
