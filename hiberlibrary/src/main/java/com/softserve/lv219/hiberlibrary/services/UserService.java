@@ -6,6 +6,13 @@ import com.softserve.lv219.hiberlibrary.dao.DAOFactory;
 import com.softserve.lv219.hiberlibrary.entity.User;
 
 public class UserService {
+	
+	public Long getAvgAge() {
+		Double result = DAOFactory.getInstance().getUserDAO().getAvgReaderAge();
+		Long roundedResult = Math.round(result);
+		return roundedResult;
+	}
+	
 	public void addUser(User user){
 		DAOFactory.getInstance().getUserDAO().addElement(user);
 	}
