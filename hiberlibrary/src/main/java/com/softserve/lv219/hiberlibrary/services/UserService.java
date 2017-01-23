@@ -7,6 +7,18 @@ import com.softserve.lv219.hiberlibrary.entity.User;
 
 public class UserService {
 	
+	
+	public Long getAvgTimeSinceRegistration() {
+		Double result = DAOFactory.getInstance().getUserDAO().getAvgTimeSinceRegistration();
+		Long roundedResult = Math.round(result);
+		return roundedResult;
+	}
+	
+	public Long getTimeSinceRegistration(Integer userId) {
+		Long result = DAOFactory.getInstance().getUserDAO().getTimeSinceRegistration(userId);
+		return result;
+	}
+	
 	public Long getAvgAge() {
 		Double result = DAOFactory.getInstance().getUserDAO().getAvgReaderAge();
 		Long roundedResult = Math.round(result);
