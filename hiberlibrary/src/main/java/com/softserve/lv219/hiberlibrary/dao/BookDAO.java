@@ -8,4 +8,6 @@ public interface BookDAO extends GenericDAO<Book, Integer> {
 	
 	public long countAll(Book book);
 	
+	public long timesWasTaken(Book book);
+	
 }

@@ -19,6 +19,11 @@ public class BookService {
 		}
 		return result;
 	}
+	
+	public long getTimesBookTaken(Book book) {
+		Long timesTaken = DAOFactory.getInstance().getBookDAO().timesWasTaken(book);
+		return timesTaken;
+	}
 
 	public void addBook(Book book){
 		DAOFactory.getInstance().getBookDAO().addElement(book);
