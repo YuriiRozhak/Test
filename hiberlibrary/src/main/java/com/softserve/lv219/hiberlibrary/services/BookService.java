@@ -6,6 +6,19 @@ import com.softserve.lv219.hiberlibrary.dao.DAOFactory;
 import com.softserve.lv219.hiberlibrary.entity.Book;
 
 public class BookService {
+	/**
+	 * 
+	 * @param book
+	 * @return <code>true</code> if there are available instances for this book, otherwise - <code>false</code>
+	 */
+	public boolean checkIfAvailable(Book book){
+		boolean result= false;
+		Long available = DAOFactory.getInstance().getBookDAO().countAvailableInstances(book);
+		if (available>0) {
+			result = true;
+		}
+		return result;
+	}
 
 	public void addBook(Book book){
 		DAOFactory.getInstance().getBookDAO().addElement(book);
