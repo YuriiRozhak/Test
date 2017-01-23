@@ -4,7 +4,6 @@ import javax.persistence.Query;
 
 import org.hibernate.Session;
 
-import com.softserve.lv219.hiberlibrary.entity.Book;
 import com.softserve.lv219.hiberlibrary.entity.BookInstance;
 import com.softserve.lv219.hiberlibrary.utils.HibernateSessionFactory;
 

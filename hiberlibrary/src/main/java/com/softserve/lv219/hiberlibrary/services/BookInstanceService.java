@@ -3,7 +3,6 @@ package com.softserve.lv219.hiberlibrary.services;
 import java.util.List;
 
 import com.softserve.lv219.hiberlibrary.dao.DAOFactory;
-import com.softserve.lv219.hiberlibrary.entity.Book;
 import com.softserve.lv219.hiberlibrary.entity.BookInstance;
 
 public class BookInstanceService {
