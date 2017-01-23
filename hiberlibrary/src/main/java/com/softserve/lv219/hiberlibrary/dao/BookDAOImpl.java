@@ -1,6 +1,5 @@
 package com.softserve.lv219.hiberlibrary.dao;
 
-
 import javax.persistence.Query;
 
 import org.hibernate.Session;
@@ -34,8 +33,6 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer> implements BookDA
 			bla.setParameter("bookid", book.getId());
 			res = (Long) bla.getSingleResult();
 
-			// res =
-			// (Integer)session.createQuery(queryString).getSingleResult();
 		} finally {
 			if ((session != null) && (session.isOpen())) {
 				HibernateSessionFactory.closeSession();
@@ -61,8 +58,6 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer> implements BookDA
 			bla.setParameter("bookid", book.getId());
 			res = (Long) bla.getSingleResult();
 
-			// res =
-			// (Integer)session.createQuery(queryString).getSingleResult();
 		} finally {
 			if ((session != null) && (session.isOpen())) {
 				HibernateSessionFactory.closeSession();
@@ -71,10 +66,12 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer> implements BookDA
 		return res;
 
 	}
-/**
- * @param book book object needed to check
- * @return number of times book was taken
- */
+
+	/**
+	 * @param book
+	 *            book object needed to check
+	 * @return number of times book was taken
+	 */
 	public long timesWasTaken(Book book) {
 		Session session = null;
 
@@ -88,8 +85,6 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer> implements BookDA
 			bla.setParameter("bookid", book.getId());
 			res = (Long) bla.getSingleResult();
 
-			// res =
-			// (Integer)session.createQuery(queryString).getSingleResult();
 		} finally {
 			if ((session != null) && (session.isOpen())) {
 				HibernateSessionFactory.closeSession();
@@ -98,30 +93,26 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer> implements BookDA
 		return res;
 	}
 
-public Double getAvgReadingTime(Book book) {
-	Session session = null;
-	String queryString = "select (AVG(UNIX_TIMESTAMP(readsession.returnDate))-"
-			+ "AVG(UNIX_TIMESTAMP(readsession.getDate)))/86400"
-			+ "from ReadSession readsession " 
-			+ "inner join readsession.bookInstance "
-			+ "inner join readsession.bookInstance.book " 
-			+ "where readsession.bookInstance.book.id =:bookid "
-			+ "and readsession.returnDate is not null";
-	Double res;
-	try {
+	public Double getAvgReadingTime(Book book) {
+		Session session = null;
+		String queryString = "select (AVG(UNIX_TIMESTAMP(readsession.returnDate))-"
+				+ "AVG(UNIX_TIMESTAMP(readsession.getDate)))/86400" + "from ReadSession readsession "
+				+ "inner join readsession.bookInstance " + "inner join readsession.bookInstance.book "
+				+ "where readsession.bookInstance.book.id =:bookid " + "and readsession.returnDate is not null";
+		Double res;
+		try {
 
-		session = HibernateSessionFactory.currentSession();
-		Query bla = session.createQuery(queryString);
-		bla.setParameter("bookid", book.getId());
-		res = (Double) bla.getSingleResult();
-		// res =
-		// (Integer)session.createQuery(queryString).getSingleResult();
-	} finally {
-		if ((session != null) && (session.isOpen())) {
-			HibernateSessionFactory.closeSession();
+			session = HibernateSessionFactory.currentSession();
+			Query bla = session.createQuery(queryString);
+			bla.setParameter("bookid", book.getId());
+			res = (Double) bla.getSingleResult();
+	
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				HibernateSessionFactory.closeSession();
+			}
 		}
+		return res;
 	}
-	return res;
-}
 
 }

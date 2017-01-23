@@ -55,7 +55,6 @@ public class GenericDAOImpl<E, T extends Serializable> implements GenericDAO<E, 
 		E element = null;
 		try {
 			session = HibernateSessionFactory.currentSession();
-			// element = (E) session.load(elementClass, elementId);
 			element = (E) session.get(genericClass, elementId);
 		} finally {
 			if ((session != null) && (session.isOpen())) {

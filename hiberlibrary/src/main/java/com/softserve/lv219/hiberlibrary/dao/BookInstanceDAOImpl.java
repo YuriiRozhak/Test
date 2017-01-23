@@ -28,8 +28,7 @@ public class BookInstanceDAOImpl extends GenericDAOImpl<BookInstance, Integer> i
 			Query bla = session.createQuery(queryString);
 			bla.setParameter("bookInstanceid", bookInstance.getId());
 			res = (Double) bla.getSingleResult();
-			// res =
-			// (Integer)session.createQuery(queryString).getSingleResult();
+
 		} finally {
 			if ((session != null) && (session.isOpen())) {
 				HibernateSessionFactory.closeSession();

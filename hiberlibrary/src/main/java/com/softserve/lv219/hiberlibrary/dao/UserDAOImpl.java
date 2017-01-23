@@ -15,7 +15,6 @@ public class UserDAOImpl extends GenericDAOImpl<User, Integer> implements UserDA
 
 	public Double getAvgReaderAge(){
 		Session session = null;
-//		select  avg(datediff(curdate(),user.birth_date)/365.25)   from user;
 		String queryString = "select (AVG(UNIX_TIMESTAMP())-"
 				+ "AVG(UNIX_TIMESTAMP(user.birthDate)))/31557600 "
 				+ "from User user" ;
