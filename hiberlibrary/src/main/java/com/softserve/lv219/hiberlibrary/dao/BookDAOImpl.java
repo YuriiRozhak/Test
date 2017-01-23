@@ -101,10 +101,10 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer> implements BookDA
 		return res;
 	}
 
-public long getAvgReadingTime(Book book) {
+public Double getAvgReadingTime(Book book) {
 	Session session = null;
-	String queryString = "select AVG(UNIX_TIMESTAMP(readsession.returnDate))-"
-			+ "AVG(UNIX_TIMESTAMP(readsession.getDate))"
+	String queryString = "select (AVG(UNIX_TIMESTAMP(readsession.returnDate))-"
+			+ "AVG(UNIX_TIMESTAMP(readsession.getDate)))/86400"
 			+ "from ReadSession readsession " 
 			+ "inner join readsession.bookInstance "
 			+ "inner join readsession.bookInstance.book " 
@@ -117,7 +117,6 @@ public long getAvgReadingTime(Book book) {
 		Query bla = session.createQuery(queryString);
 		bla.setParameter("bookid", book.getId());
 		res = (Double) bla.getSingleResult();
-		res/=86400;
 		// res =
 		// (Integer)session.createQuery(queryString).getSingleResult();
 	} finally {
@@ -125,7 +124,7 @@ public long getAvgReadingTime(Book book) {
 			HibernateSessionFactory.closeSession();
 		}
 	}
-	return Math.round(res);
+	return res;
 }
 
 }
