@@ -1,5 +1,8 @@
 package com.softserve.lv219.hiberlibrary.dao;
 
+import java.sql.Date;
+import java.util.List;
+
 import javax.persistence.Query;
 
 import org.hibernate.Session;
@@ -97,5 +100,32 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer> implements BookDA
 		}
 		return res;
 	}
+
+public long getAvgReadingTime(Book book) {
+	Session session = null;
+	String queryString = "select AVG(UNIX_TIMESTAMP(readsession.returnDate))-"
+			+ "AVG(UNIX_TIMESTAMP(readsession.getDate))"
+			+ "from ReadSession readsession " 
+			+ "inner join readsession.bookInstance "
+			+ "inner join readsession.bookInstance.book " 
+			+ "where readsession.bookInstance.book.id =:bookid "
+			+ "and readsession.returnDate is not null";
+	Double res;
+	try {
+
+		session = HibernateSessionFactory.currentSession();
+		Query bla = session.createQuery(queryString);
+		bla.setParameter("bookid", book.getId());
+		res = (Double) bla.getSingleResult();
+		res/=86400;
+		// res =
+		// (Integer)session.createQuery(queryString).getSingleResult();
+	} finally {
+		if ((session != null) && (session.isOpen())) {
+			HibernateSessionFactory.closeSession();
+		}
+	}
+	return Math.round(res);
+}
 
 }

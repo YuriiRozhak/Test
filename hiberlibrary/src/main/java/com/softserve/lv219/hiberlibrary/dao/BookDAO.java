@@ -10,4 +10,6 @@ public interface BookDAO extends GenericDAO<Book, Integer> {
 	
 	public long timesWasTaken(Book book);
 	
+	public long getAvgReadingTime(Book book);
+	
 }

@@ -20,6 +20,11 @@ public class BookService {
 		return result;
 	}
 	
+	public long getAvgReadingTime(Book book) {
+		Long avgReadingTime = DAOFactory.getInstance().getBookDAO().getAvgReadingTime(book);
+		return avgReadingTime;
+	}
+	
 	public long getTimesBookTaken(Book book) {
 		Long timesTaken = DAOFactory.getInstance().getBookDAO().timesWasTaken(book);
 		return timesTaken;
