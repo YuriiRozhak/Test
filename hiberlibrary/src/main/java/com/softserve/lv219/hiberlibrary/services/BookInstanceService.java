@@ -3,10 +3,16 @@ package com.softserve.lv219.hiberlibrary.services;
 import java.util.List;
 
 import com.softserve.lv219.hiberlibrary.dao.DAOFactory;
+import com.softserve.lv219.hiberlibrary.entity.Book;
 import com.softserve.lv219.hiberlibrary.entity.BookInstance;
 
 public class BookInstanceService {
 
+	
+	public long getTimesBookTaken(BookInstance bookInstance) {
+		Long timesTaken = DAOFactory.getInstance().getBookInstanceDAO().timesWasTaken(bookInstance);
+		return timesTaken;
+	}
 	
 	public void addBookInstance(BookInstance bookInstance){
 		DAOFactory.getInstance().getBookInstanceDAO().addElement(bookInstance);
