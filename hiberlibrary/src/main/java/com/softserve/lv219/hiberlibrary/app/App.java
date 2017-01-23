@@ -2,6 +2,7 @@ package com.softserve.lv219.hiberlibrary.app;
 
 
 import com.softserve.lv219.hiberlibrary.dao.DAOFactory;
+import com.softserve.lv219.hiberlibrary.entity.Author;
 import com.softserve.lv219.hiberlibrary.entity.Book;
 
 /**
@@ -12,11 +13,11 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
         
+//        Author 
         Book book1 = new Book();
         book1.setName("Kolobok");
-        
+
         DAOFactory.getInstance().getBookDAO().addElement(book1);
     }
 }
