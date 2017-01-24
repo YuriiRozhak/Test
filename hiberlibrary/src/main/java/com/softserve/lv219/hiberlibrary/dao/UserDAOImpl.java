@@ -1,7 +1,14 @@
 package com.softserve.lv219.hiberlibrary.dao;
 
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+
 import javax.persistence.Query;
+import javax.persistence.TemporalType;
 
 import org.hibernate.Session;
 
@@ -14,30 +21,26 @@ public class UserDAOImpl extends GenericDAOImpl<User, Integer> implements UserDA
 		super(User.class);
 	}
 	
-//	select sum(times)/count(*)
-//	from(
-//	select  * , count(idread_session) as times
-//	from user 
-//	inner join read_session 
-//	on read_session.id_user = user.iduser
-//	where get_date between date('2012-11-03') and date('2016-11-05')
-//	group by name) as T
-	
+
 public double avgRequestByPeriod(String startDate, String endDate){
+	double res = 0;
 	Session session = null;
-	String queryString = "select sum(times)/count(*)"
-			+ " from (select *,count(rs.id) as times from "
-			+ "ReadSession rs"
-			+ " inner join rs.user"
-			+ " where rs.getDate between :stDate AND :edDate "
-			+ "group by rs.user.name) as t" ;
-	Double res;
+	String queryString = "select count(*)*1.0/count(distinct rs.user.name) "
+			+ "from ReadSession rs inner join rs.user "
+			+ "where rs.getDate between :stDate and :edDate" ;
+	
 	try {
+
+		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date stDate = formatter.parse(startDate);
+            Date enDate = formatter.parse(endDate);
 		session = HibernateSessionFactory.currentSession();
 		Query bla = session.createQuery(queryString);
-		bla.setParameter("stDate", startDate);
-		bla.setParameter("edDate", endDate);
-		res = (Double) bla.getSingleResult();
+		bla.setParameter("stDate", stDate, TemporalType.DATE);
+		bla.setParameter("edDate", enDate, TemporalType.DATE);
+		res =  (double) bla.getSingleResult();
+	} catch (ParseException | NullPointerException e) {
+		System.out.println("Wrong Input");
 	} finally {
 		if ((session != null) && (session.isOpen())) {
 			HibernateSessionFactory.closeSession();

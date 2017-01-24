@@ -7,15 +7,23 @@ import com.softserve.lv219.hiberlibrary.entity.BookInstance;
 
 public class BookInstanceService {
 
-	public long getAvgReadingTime(Integer bookInstanceId) {
-		
+	public long getAvgReadingTimeById(Integer bookInstanceId) {
 		Double avgReadingTime = DAOFactory.getInstance().getBookInstanceDAO().getAvgReadingTime(bookInstanceId);
 		return Math.round(avgReadingTime);
 	}
 	
-	public long getTimesBookTaken(Integer bookInstanceId) {
-		
+	public long getTimesTakenById(Integer bookInstanceId) {
 		Long timesTaken = DAOFactory.getInstance().getBookInstanceDAO().timesWasTaken(bookInstanceId);
+		return timesTaken;
+	}
+	
+	public long getAvgReadingTimeByInstance(BookInstance bookInstance) {
+		Double avgReadingTime = DAOFactory.getInstance().getBookInstanceDAO().getAvgReadingTime(bookInstance.getId());
+		return Math.round(avgReadingTime);
+	}
+	
+	public long getTimesTakenByInstance(BookInstance bookInstance) {
+		Long timesTaken = DAOFactory.getInstance().getBookInstanceDAO().timesWasTaken(bookInstance.getId());
 		return timesTaken;
 	}
 	
