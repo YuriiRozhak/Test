@@ -73,7 +73,6 @@ public double avgRequestByPeriod(String startDate, String endDate){
 				+ "where user.id=:userId" ;
 		Long res;
 		try {
-
 			session = HibernateSessionFactory.currentSession();
 			Query bla = session.createQuery(queryString);
 			bla.setParameter("userId", userId);

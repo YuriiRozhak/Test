@@ -1,3 +1,4 @@
+
 package com.softserve.lv219.hiberlibrary.entity;
 
 import javax.persistence.Column;
