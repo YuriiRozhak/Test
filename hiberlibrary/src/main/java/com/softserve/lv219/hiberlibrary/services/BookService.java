@@ -11,7 +11,7 @@ public class BookService {
 	 * @param book
 	 * @return <code>true</code> if there are available instances for this book, otherwise - <code>false</code>
 	 */
-	public boolean checkIfAvailable(Integer bookId){
+	public boolean checkIfAvailableById(Integer bookId){
 		boolean result= false;
 		Long available = DAOFactory.getInstance().getBookDAO().countAvailableInstances(bookId);
 		if (available>0) {
@@ -20,13 +20,32 @@ public class BookService {
 		return result;
 	}
 	
-	public long getAvgReadingTime(Integer bookId) {
+	public long getAvgReadingTimeById(Integer bookId) {
 		Double avgReadingTime = DAOFactory.getInstance().getBookDAO().getAvgReadingTime(bookId);
 		return Math.round(avgReadingTime);
 	}
 	
-	public long getTimesBookTaken(Integer bookId) {
+	public long getTimesBookTakenById(Integer bookId) {
 		Long timesTaken = DAOFactory.getInstance().getBookDAO().timesWasTaken(bookId);
+		return timesTaken;
+	}
+	
+	public boolean checkIfAvailable(Book book){
+		boolean result= false;
+		Long available = DAOFactory.getInstance().getBookDAO().countAvailableInstances(book.getId());
+		if (available>0) {
+			result = true;
+		}
+		return result;
+	}
+	
+	public long getAvgReadingTime(Book book) {
+		Double avgReadingTime = DAOFactory.getInstance().getBookDAO().getAvgReadingTime(book.getId());
+		return Math.round(avgReadingTime);
+	}
+	
+	public long getTimesBookTaken(Book book) {
+		Long timesTaken = DAOFactory.getInstance().getBookDAO().timesWasTaken(book.getId());
 		return timesTaken;
 	}
 
