@@ -1,5 +1,8 @@
 package com.softserve.lv219.hiberlibrary.dao;
 
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+
 import javax.persistence.Query;
 
 import org.hibernate.Session;
@@ -13,7 +16,37 @@ public class UserDAOImpl extends GenericDAOImpl<User, Integer> implements UserDA
 		super(User.class);
 	}
 	
-//	select datediff(curdate(),user.registerdate), name from user ;
+//	select sum(times)/count(*)
+//	from(
+//	select  * , count(idread_session) as times
+//	from user 
+//	inner join read_session 
+//	on read_session.id_user = user.iduser
+//	where get_date between date('2012-11-03') and date('2016-11-05')
+//	group by name) as T
+	
+public double avgRequestByPeriod(String startDate, String endDate){
+	Session session = null;
+	String queryString = "select sum(times)/count(*)"
+			+ " from (select *,count(rs.id) as times from "
+			+ "ReadSession rs"
+			+ " inner join rs.user"
+			+ " where rs.getDate between :stDate AND :edDate "
+			+ "group by rs.user.name) as t" ;
+	Double res;
+	try {
+		session = HibernateSessionFactory.currentSession();
+		Query bla = session.createQuery(queryString);
+		bla.setParameter("stDate", startDate);
+		bla.setParameter("edDate", endDate);
+		res = (Double) bla.getSingleResult();
+	} finally {
+		if ((session != null) && (session.isOpen())) {
+			HibernateSessionFactory.closeSession();
+		}
+	}
+	return res;
+}
 	
 	public double getAvgTimeSinceRegistration() {
 		Session session = null;

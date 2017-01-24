@@ -7,6 +7,10 @@ import com.softserve.lv219.hiberlibrary.entity.User;
 
 public class UserService {
 	
+	public double avgRequestByPeriod(String startDate, String endDate){
+		Double result = DAOFactory.getInstance().getUserDAO().avgRequestByPeriod(startDate, endDate);
+		return result;
+	}
 	
 	public Long getAvgTimeSinceRegistration() {
 		Double result = DAOFactory.getInstance().getUserDAO().getAvgTimeSinceRegistration();
