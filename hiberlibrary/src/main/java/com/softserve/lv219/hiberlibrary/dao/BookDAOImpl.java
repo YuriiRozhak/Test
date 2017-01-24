@@ -18,7 +18,7 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer> implements BookDA
 	 *            book object needed to check
 	 * @return quantity of available instances
 	 */
-	public long countAvailableInstances(Book book) {
+	public long countAvailableInstances(Integer bookId) {
 		Session session = null;
 		String queryString = "select count(*) from BookInstance bookinstance "
 				+ "where bookinstance.book.id =:bookid and not exists "
@@ -30,7 +30,7 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer> implements BookDA
 
 			session = HibernateSessionFactory.currentSession();
 			Query bla = session.createQuery(queryString);
-			bla.setParameter("bookid", book.getId());
+			bla.setParameter("bookid", bookId);
 			res = (Long) bla.getSingleResult();
 
 		} finally {
@@ -47,7 +47,7 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer> implements BookDA
 	 *            book object needed to check
 	 * @return quantity of all instances of this book
 	 */
-	public long countAll(Book book) {
+	public long countAll(Integer bookId) {
 		Session session = null;
 		String queryString = "select count(*) from BookInstance bookinstance " + "where bookinstance.book.id =:bookid";
 		long res;
@@ -55,7 +55,7 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer> implements BookDA
 
 			session = HibernateSessionFactory.currentSession();
 			Query bla = session.createQuery(queryString);
-			bla.setParameter("bookid", book.getId());
+			bla.setParameter("bookid", bookId);
 			res = (Long) bla.getSingleResult();
 
 		} finally {
@@ -72,17 +72,19 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer> implements BookDA
 	 *            book object needed to check
 	 * @return number of times book was taken
 	 */
-	public long timesWasTaken(Book book) {
+	public long timesWasTaken(Integer bookId) {
 		Session session = null;
 
-		String queryString = "select count(*) from ReadSession readsession " + "inner join readsession.bookInstance "
-				+ "inner join readsession.bookInstance.book " + "where readsession.bookInstance.book.id =:bookid";
+		String queryString = "select count(*) from ReadSession readsession " 
+		+ "inner join readsession.bookInstance "
+				+ "inner join readsession.bookInstance.book " 
+		+ "where readsession.bookInstance.book.id =:bookid";
 		long res;
 		try {
 
 			session = HibernateSessionFactory.currentSession();
 			Query bla = session.createQuery(queryString);
-			bla.setParameter("bookid", book.getId());
+			bla.setParameter("bookid", bookId);
 			res = (Long) bla.getSingleResult();
 
 		} finally {
@@ -93,7 +95,7 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer> implements BookDA
 		return res;
 	}
 
-	public Double getAvgReadingTime(Book book) {
+	public Double getAvgReadingTime(Integer bookId) {
 		Session session = null;
 		String queryString = "select (AVG(UNIX_TIMESTAMP(readsession.returnDate))-"
 				+ "AVG(UNIX_TIMESTAMP(readsession.getDate)))/86400" + "from ReadSession readsession "
@@ -104,7 +106,7 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer> implements BookDA
 
 			session = HibernateSessionFactory.currentSession();
 			Query bla = session.createQuery(queryString);
-			bla.setParameter("bookid", book.getId());
+			bla.setParameter("bookid", bookId);
 			res = (Double) bla.getSingleResult();
 	
 		} finally {

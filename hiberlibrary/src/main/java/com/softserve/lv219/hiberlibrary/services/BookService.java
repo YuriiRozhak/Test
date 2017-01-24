@@ -13,8 +13,7 @@ public class BookService {
 	 */
 	public boolean checkIfAvailable(Integer bookId){
 		boolean result= false;
-		Book book = getBookById(bookId);
-		Long available = DAOFactory.getInstance().getBookDAO().countAvailableInstances(book);
+		Long available = DAOFactory.getInstance().getBookDAO().countAvailableInstances(bookId);
 		if (available>0) {
 			result = true;
 		}
@@ -22,14 +21,12 @@ public class BookService {
 	}
 	
 	public long getAvgReadingTime(Integer bookId) {
-		Book book = getBookById(bookId);
-		Double avgReadingTime = DAOFactory.getInstance().getBookDAO().getAvgReadingTime(book);
+		Double avgReadingTime = DAOFactory.getInstance().getBookDAO().getAvgReadingTime(bookId);
 		return Math.round(avgReadingTime);
 	}
 	
 	public long getTimesBookTaken(Integer bookId) {
-		Book book = getBookById(bookId);
-		Long timesTaken = DAOFactory.getInstance().getBookDAO().timesWasTaken(book);
+		Long timesTaken = DAOFactory.getInstance().getBookDAO().timesWasTaken(bookId);
 		return timesTaken;
 	}
 

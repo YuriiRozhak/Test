@@ -4,6 +4,6 @@ import com.softserve.lv219.hiberlibrary.entity.BookInstance;
 
 public interface BookInstanceDAO extends GenericDAO<BookInstance, Integer> {
 
-	public long timesWasTaken(BookInstance bookInstance);
-	public Double getAvgReadingTime(BookInstance bookInstance);
+	public long timesWasTaken(Integer bookInstanceId);
+	public Double getAvgReadingTime(Integer bookInstanceId);
 }

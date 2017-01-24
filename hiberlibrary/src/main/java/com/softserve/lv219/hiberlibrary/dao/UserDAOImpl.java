@@ -50,8 +50,8 @@ public double avgRequestByPeriod(String startDate, String endDate){
 	
 	public double getAvgTimeSinceRegistration() {
 		Session session = null;
-		String queryString = "select (AVG(UNIX_TIMESTAMP())-"
-				+ "AVG(UNIX_TIMESTAMP(user.registrationDate)))/86400 "
+		String queryString = "select (AVG(UNIX_TIMESTAMP()-"
+				+ "UNIX_TIMESTAMP(user.registrationDate)))/86400 "
 				+ "from User user" ;
 		Double res;
 		try {
@@ -67,7 +67,7 @@ public double avgRequestByPeriod(String startDate, String endDate){
 		return res;		
 	}
 	
-	public Long getTimeSinceRegistration(Integer	userId) {
+	public Long getTimeSinceRegistration(Integer userId) {
 		Session session = null;
 		String queryString = "select (UNIX_TIMESTAMP()-"
 				+ "UNIX_TIMESTAMP(user.registrationDate))/86400 "
@@ -90,8 +90,8 @@ public double avgRequestByPeriod(String startDate, String endDate){
 
 	public Double getAvgReaderAge(){
 		Session session = null;
-		String queryString = "select (AVG(UNIX_TIMESTAMP())-"
-				+ "AVG(UNIX_TIMESTAMP(user.birthDate)))/31557600 "
+		String queryString = "select (AVG(UNIX_TIMESTAMP()-"
+				+ "UNIX_TIMESTAMP(user.birthDate)))/31557600 "
 				+ "from User user" ;
 		Double res;
 		try {
