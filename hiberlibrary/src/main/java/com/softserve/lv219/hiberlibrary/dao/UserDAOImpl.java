@@ -1,7 +1,5 @@
 package com.softserve.lv219.hiberlibrary.dao;
 
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 
 import javax.persistence.Query;
 

@@ -14,8 +14,8 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer> implements BookDA
 	}
 
 	/**
-	 * @param book
-	 *            book object needed to check
+	 * @param bookId
+	 *            book id of object needed to check
 	 * @return quantity of available instances
 	 */
 	public long countAvailableInstances(Integer bookId) {
@@ -44,7 +44,7 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer> implements BookDA
 
 	/**
 	 * @param book
-	 *            book object needed to check
+	 *            book id of object needed to check
 	 * @return quantity of all instances of this book
 	 */
 	public long countAll(Integer bookId) {
@@ -69,7 +69,7 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer> implements BookDA
 
 	/**
 	 * @param book
-	 *            book object needed to check
+	 *            book id of object needed to check
 	 * @return number of times book was taken
 	 */
 	public long timesWasTaken(Integer bookId) {
