@@ -5,13 +5,14 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import java.util.List;
 
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 
 import org.hibernate.Session;
 
+import com.softserve.lv219.hiberlibrary.entity.Book;
 import com.softserve.lv219.hiberlibrary.entity.User;
 import com.softserve.lv219.hiberlibrary.utils.HibernateSessionFactory;
 
@@ -152,6 +153,56 @@ public double avgRequestByPeriod(String startDate, String endDate){
 			Query bla = session.createQuery(queryString);
 			bla.setParameter("BIId", bookInstanceId);
 			res = (Double) bla.getSingleResult();
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				HibernateSessionFactory.closeSession();
+			}
+		}
+		return res;
+	}
+
+
+//	select  book.IDBOOK,book.name, publishDate, book.IDAUTHOR, readsession.IDBOOKINSTANCE  from 
+//	readsession inner join bookinstance on readsession.IDBOOKINSTANCE = bookinstance.IDBOOKINSTANCE
+//    inner join book ON book.IDBOOK = bookinstance.IDBOOK
+//    where IDUSER = 13; 
+	
+	public List<Book> booksWasTaken(Integer userId) {
+		Session session = null;
+		String queryString = "select rs.bookInstance.book from ReadSession rs "
+				+ "inner join rs.bookInstance "
+				+ "inner join rs.bookInstance.book "
+				+ "inner join rs.user "
+				+ "where rs.user.id =:idUser" ;
+		List<Book> res;
+		try {
+
+			session = HibernateSessionFactory.currentSession();
+			Query bla = session.createQuery(queryString);
+			bla.setParameter("idUser", userId);
+			res =  bla.getResultList();
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				HibernateSessionFactory.closeSession();
+			}
+		}
+		return res;
+	} 
+	
+	public List<Book> booksWasNotReturned(Integer userId) {
+		Session session = null;
+		String queryString = "select rs.bookInstance.book from ReadSession rs "
+				+ "inner join rs.bookInstance "
+				+ "inner join rs.bookInstance.book "
+				+ "inner join rs.user "
+				+ "where rs.user.id =:idUser and rs.returnDate is null" ;
+		List<Book> res;
+		try {
+
+			session = HibernateSessionFactory.currentSession();
+			Query bla = session.createQuery(queryString);
+			bla.setParameter("idUser", userId);
+			res =  bla.getResultList();
 		} finally {
 			if ((session != null) && (session.isOpen())) {
 				HibernateSessionFactory.closeSession();
