@@ -3,9 +3,31 @@ package com.softserve.lv219.hiberlibrary.services;
 import java.util.List;
 
 import com.softserve.lv219.hiberlibrary.dao.DAOFactory;
+import com.softserve.lv219.hiberlibrary.entity.Book;
+import com.softserve.lv219.hiberlibrary.entity.BookInstance;
 import com.softserve.lv219.hiberlibrary.entity.User;
 
 public class UserService {
+	
+	public double getAvgAgeByBook(Integer id){
+		Double result = DAOFactory.getInstance().getUserDAO().getAvgAgeByBook(id);
+		return result;
+	}
+	
+	public double getAvgAgeByBook(Book book){
+		Double result = DAOFactory.getInstance().getUserDAO().getAvgAgeByBook(book.getId());
+		return result;
+	}
+	
+	public double getAvgAgeByBookInstance(Integer id){
+		Double result = DAOFactory.getInstance().getUserDAO().getAvgAgeByBookInstance(id);
+		return result;
+	}
+	
+	public double getAvgAgeByBookInstance(BookInstance bI){
+		Double result = DAOFactory.getInstance().getUserDAO().getAvgAgeByBook(bI.getId());
+		return result;
+	}
 	
 	public double avgRequestByPeriod(String startDate, String endDate){
 		Double result = DAOFactory.getInstance().getUserDAO().avgRequestByPeriod(startDate, endDate);

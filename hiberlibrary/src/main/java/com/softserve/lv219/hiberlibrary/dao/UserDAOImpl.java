@@ -106,5 +106,57 @@ public double avgRequestByPeriod(String startDate, String endDate){
 		}
 		return res;
 		
+	}
+
+
+	@Override
+	public double getAvgAgeByBook(Integer bookId) {
+		Session session = null;
+		String queryString = "select (AVG(UNIX_TIMESTAMP()-"
+				+ "UNIX_TIMESTAMP(user.birthDate)))/31557600 "
+				+ "from User user "
+				+ "where user.id in "
+				+ "(select distinct rs.user.id from "
+				+ "ReadSession rs inner join rs.user inner join rs.bookInstance inner join rs.bookInstance.book "
+				+ "where rs.bookInstance.book.id = :bookId)" ;
+		Double res;
+		try {
+
+			session = HibernateSessionFactory.currentSession();
+			Query bla = session.createQuery(queryString);
+			bla.setParameter("bookId", bookId);
+			res = (Double) bla.getSingleResult();
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				HibernateSessionFactory.closeSession();
+			}
+		}
+		return res;
+	}
+
+
+	@Override
+	public double getAvgAgeByBookInstance(Integer bookInstanceId) {
+		Session session = null;
+		String queryString = "select (AVG(UNIX_TIMESTAMP()-"
+				+ "UNIX_TIMESTAMP(user.birthDate)))/31557600 "
+				+ "from User user "
+				+ "where user.id in "
+				+ "(select distinct rs.user.id from "
+				+ "ReadSession rs inner join rs.user inner join rs.bookInstance "
+				+ "where rs.bookInstance.id = :BIId)" ;
+		Double res;
+		try {
+
+			session = HibernateSessionFactory.currentSession();
+			Query bla = session.createQuery(queryString);
+			bla.setParameter("BIId", bookInstanceId);
+			res = (Double) bla.getSingleResult();
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				HibernateSessionFactory.closeSession();
+			}
+		}
+		return res;
 	} 
 }
