@@ -36,10 +36,10 @@ public double avgRequestByPeriod(String startDate, String endDate){
             Date stDate = formatter.parse(startDate);
             Date enDate = formatter.parse(endDate);
 		session = HibernateSessionFactory.currentSession();
-		Query bla = session.createQuery(queryString);
-		bla.setParameter("stDate", stDate, TemporalType.DATE);
-		bla.setParameter("edDate", enDate, TemporalType.DATE);
-		res =  (double) bla.getSingleResult();
+		Query query = session.createQuery(queryString);
+		query.setParameter("stDate", stDate, TemporalType.DATE);
+		query.setParameter("edDate", enDate, TemporalType.DATE);
+		res =  (double) query.getSingleResult();
 	} catch (ParseException | NullPointerException e) {
 		System.out.println("Wrong Input");
 	} finally {
@@ -59,8 +59,8 @@ public double avgRequestByPeriod(String startDate, String endDate){
 		try {
 
 			session = HibernateSessionFactory.currentSession();
-			Query bla = session.createQuery(queryString);
-			res = (Double) bla.getSingleResult();
+			Query query = session.createQuery(queryString);
+			res = (Double) query.getSingleResult();
 		} finally {
 			if ((session != null) && (session.isOpen())) {
 				HibernateSessionFactory.closeSession();
@@ -78,9 +78,9 @@ public double avgRequestByPeriod(String startDate, String endDate){
 		Long res;
 		try {
 			session = HibernateSessionFactory.currentSession();
-			Query bla = session.createQuery(queryString);
-			bla.setParameter("userId", userId);
-			res =  (Long) bla.getSingleResult();
+			Query query = session.createQuery(queryString);
+			query.setParameter("userId", userId);
+			res =  (Long) query.getSingleResult();
 		} finally {
 			if ((session != null) && (session.isOpen())) {
 				HibernateSessionFactory.closeSession();
@@ -98,8 +98,8 @@ public double avgRequestByPeriod(String startDate, String endDate){
 		try {
 
 			session = HibernateSessionFactory.currentSession();
-			Query bla = session.createQuery(queryString);
-			res = (Double) bla.getSingleResult();
+			Query query = session.createQuery(queryString);
+			res = (Double) query.getSingleResult();
 		} finally {
 			if ((session != null) && (session.isOpen())) {
 				HibernateSessionFactory.closeSession();
@@ -124,9 +124,9 @@ public double avgRequestByPeriod(String startDate, String endDate){
 		try {
 
 			session = HibernateSessionFactory.currentSession();
-			Query bla = session.createQuery(queryString);
-			bla.setParameter("bookId", bookId);
-			res = (Double) bla.getSingleResult();
+			Query query = session.createQuery(queryString);
+			query.setParameter("bookId", bookId);
+			res = (Double) query.getSingleResult();
 		} finally {
 			if ((session != null) && (session.isOpen())) {
 				HibernateSessionFactory.closeSession();
@@ -136,7 +136,6 @@ public double avgRequestByPeriod(String startDate, String endDate){
 	}
 
 
-	@Override
 	public double getAvgAgeByBookInstance(Integer bookInstanceId) {
 		Session session = null;
 		String queryString = "select (AVG(UNIX_TIMESTAMP()-"
@@ -150,9 +149,9 @@ public double avgRequestByPeriod(String startDate, String endDate){
 		try {
 
 			session = HibernateSessionFactory.currentSession();
-			Query bla = session.createQuery(queryString);
-			bla.setParameter("BIId", bookInstanceId);
-			res = (Double) bla.getSingleResult();
+			Query query = session.createQuery(queryString);
+			query.setParameter("BIId", bookInstanceId);
+			res = (Double) query.getSingleResult();
 		} finally {
 			if ((session != null) && (session.isOpen())) {
 				HibernateSessionFactory.closeSession();
@@ -162,10 +161,6 @@ public double avgRequestByPeriod(String startDate, String endDate){
 	}
 
 
-//	select  book.IDBOOK,book.name, publishDate, book.IDAUTHOR, readsession.IDBOOKINSTANCE  from 
-//	readsession inner join bookinstance on readsession.IDBOOKINSTANCE = bookinstance.IDBOOKINSTANCE
-//    inner join book ON book.IDBOOK = bookinstance.IDBOOK
-//    where IDUSER = 13; 
 	
 	public List<Book> booksWasTaken(Integer userId) {
 		Session session = null;
@@ -178,9 +173,9 @@ public double avgRequestByPeriod(String startDate, String endDate){
 		try {
 
 			session = HibernateSessionFactory.currentSession();
-			Query bla = session.createQuery(queryString);
-			bla.setParameter("idUser", userId);
-			res =  bla.getResultList();
+			Query query = session.createQuery(queryString);
+			query.setParameter("idUser", userId);
+			res =  query.getResultList();
 		} finally {
 			if ((session != null) && (session.isOpen())) {
 				HibernateSessionFactory.closeSession();
@@ -200,9 +195,9 @@ public double avgRequestByPeriod(String startDate, String endDate){
 		try {
 
 			session = HibernateSessionFactory.currentSession();
-			Query bla = session.createQuery(queryString);
-			bla.setParameter("idUser", userId);
-			res =  bla.getResultList();
+			Query query = session.createQuery(queryString);
+			query.setParameter("idUser", userId);
+			res =  query.getResultList();
 		} finally {
 			if ((session != null) && (session.isOpen())) {
 				HibernateSessionFactory.closeSession();
