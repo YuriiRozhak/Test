@@ -1,10 +1,7 @@
 package com.softserve.lv219.hiberlibrary.dao;
 
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.text.ParseException;import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -40,9 +37,9 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer>implements BookDAO
 		try {
 
 			session = HibernateSessionFactory.currentSession();
-			Query bla = session.createQuery(queryString);
-			bla.setParameter("bookid", bookId);
-			res = (Long) bla.getSingleResult();
+			Query query = session.createQuery(queryString);
+			query.setParameter("bookid", bookId);
+			res = (Long) query.getSingleResult();
 
 		} finally {
 			if ((session != null) && (session.isOpen())) {
@@ -65,9 +62,9 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer>implements BookDAO
 		try {
 
 			session = HibernateSessionFactory.currentSession();
-			Query bla = session.createQuery(queryString);
-			bla.setParameter("bookid", bookId);
-			res = (Long) bla.getSingleResult();
+			Query query = session.createQuery(queryString);
+			query.setParameter("bookid", bookId);
+			res = (Long) query.getSingleResult();
 
 		} finally {
 			if ((session != null) && (session.isOpen())) {
@@ -92,9 +89,9 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer>implements BookDAO
 		try {
 
 			session = HibernateSessionFactory.currentSession();
-			Query bla = session.createQuery(queryString);
-			bla.setParameter("bookid", bookId);
-			res = (Long) bla.getSingleResult();
+			Query query = session.createQuery(queryString);
+			query.setParameter("bookid", bookId);
+			res = (Long) query.getSingleResult();
 
 		} finally {
 			if ((session != null) && (session.isOpen())) {
@@ -114,9 +111,9 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer>implements BookDAO
 		try {
 
 			session = HibernateSessionFactory.currentSession();
-			Query bla = session.createQuery(queryString);
-			bla.setParameter("bookid", bookId);
-			res = (Double) bla.getSingleResult();
+			Query query = session.createQuery(queryString);
+			query.setParameter("bookid", bookId);
+			res = (Double) query.getSingleResult();
 
 		} finally {
 			if ((session != null) && (session.isOpen())) {
@@ -135,9 +132,9 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer>implements BookDAO
 		try {
 
 			session = HibernateSessionFactory.currentSession();
-			Query bla = session.createQuery(queryString);
-			bla.setParameter("authorid", authorId);
-			res = (List<Book>) bla.getResultList();
+			Query query = session.createQuery(queryString);
+			query.setParameter("authorid", authorId);
+			res = (List<Book>) query.getResultList();
 
 		} finally {
 			if ((session != null) && (session.isOpen())) {
@@ -150,15 +147,15 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer>implements BookDAO
 	public List<Book> bookByCoAuthor(int coAuthorId) {
 		Session session = null;
 
-		String queryString = "select book from Book book  " + "inner join book.subauthors  "
+		String queryString = "select distinct book from Book book  " + "inner join book.subauthors  "
 				+ "where book.author.id =:coauthorid";
 		List<Book> res;
 		try {
 
 			session = HibernateSessionFactory.currentSession();
-			Query bla = session.createQuery(queryString);
-			bla.setParameter("coauthorid", coAuthorId);
-			res = (List<Book>) bla.getResultList();
+			Query query = session.createQuery(queryString);
+			query.setParameter("coauthorid", coAuthorId);
+			res = (List<Book>) query.getResultList();
 
 		} finally {
 			if ((session != null) && (session.isOpen())) {
@@ -172,10 +169,9 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer>implements BookDAO
 
 		Session session = null;
 
-		String queryString = "from Book book  " + 
-		"where book.publishDate > :date ";
+		String queryString = "from Book book  " + "where book.publishDate > :date ";
 
-		List<Book> res=null;
+		List<Book> res = null;
 
 		try {
 
@@ -183,12 +179,12 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer>implements BookDAO
 			Date Date = formatter.parse(date);
 
 			session = HibernateSessionFactory.currentSession();
-			Query bla = session.createQuery(queryString);
-			bla.setParameter("date", Date, TemporalType.DATE);
-			res = (List<Book>) bla.getResultList();
+			Query query = session.createQuery(queryString);
+			query.setParameter("date", Date, TemporalType.DATE);
+			res = (List<Book>) query.getResultList();
 
 		} catch (ParseException e) {
-			
+
 			System.out.println("Wrong Input");
 		} finally {
 			if ((session != null) && (session.isOpen())) {
@@ -197,36 +193,35 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer>implements BookDAO
 		}
 		return res;
 	}
-	//6
-	public Map<Book, Long> getPopular(String startDateString, String endDateString){
+
+	// 6
+	public Map<Book, Long> getPopular(String startDateString, String endDateString) {
 		Map<Book, Long> res = null;
-		List<Object[]> permanentRes =null;
+		List<Object[]> permanentRes = null;
 		Session session = null;
-		String queryString = 
-				 "select rs.bookInstance.book, "
+		String queryString = "select rs.bookInstance.book, "
 				+ "count(rs.bookInstance.id) as times from ReadSession rs inner join rs.bookInstance"
-				+ " inner join rs.bookInstance.book "
-				+ "where rs.getDate between :stDate and :edDate"
-				+ " group by rs.bookInstance.id "
-				+ "order by times";
+				+ " inner join rs.bookInstance.book " + "where rs.getDate between :stDate and :edDate"
+				+ " group by rs.bookInstance.id " + "order by times";
 		try {
 			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-	            Date startDate = formatter.parse(startDateString);
-	            Date endDate = formatter.parse(endDateString);
+			Date startDate = formatter.parse(startDateString);
+			Date endDate = formatter.parse(endDateString);
 			session = HibernateSessionFactory.currentSession();
 			Query bla = session.createQuery(queryString);
 			bla.setParameter("stDate", startDate, TemporalType.DATE);
 			bla.setParameter("edDate", endDate, TemporalType.DATE);
 
 			permanentRes = bla.getResultList();
-			res= new HashMap<Book,Long>(permanentRes.size());
+			res = new HashMap<Book, Long>(permanentRes.size());
 			for (Object[] row : permanentRes) {
-			    Book book = (Book) row[0];
-			    Long timesPicked = (Long) row[1];
-			    res.put(book, timesPicked);}
-			
+				Book book = (Book) row[0];
+				Long timesPicked = (Long) row[1];
+				res.put(book, timesPicked);
+			}
+
 		} catch (ParseException | NullPointerException e) {
-			
+
 			System.out.println("Wrong Input");
 			e.printStackTrace();
 		} finally {
@@ -237,36 +232,33 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer>implements BookDAO
 		return res;
 	}
 
-	
-	public Map<Book, Long> getNotPopular(String startDateString, String endDateString){
+	public Map<Book, Long> getNotPopular(String startDateString, String endDateString) {
 		Map<Book, Long> res = null;
-		List<Object[]> permanentRes =null;
+		List<Object[]> permanentRes = null;
 		Session session = null;
-		String queryString = 
-				 "select rs.bookInstance.book, "
+		String queryString = "select rs.bookInstance.book, "
 				+ "count(rs.bookInstance.id) as times from ReadSession rs inner join rs.bookInstance"
-				+ " inner join rs.bookInstance.book "
-				+ "where rs.getDate between :stDate and :edDate"
-				+ " group by rs.bookInstance.id "
-				+ "order by times desc";
+				+ " inner join rs.bookInstance.book " + "where rs.getDate between :stDate and :edDate"
+				+ " group by rs.bookInstance.id " + "order by times desc";
 		try {
 			DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-	            Date startDate = formatter.parse(startDateString);
-	            Date endDate = formatter.parse(endDateString);
+			Date startDate = formatter.parse(startDateString);
+			Date endDate = formatter.parse(endDateString);
 			session = HibernateSessionFactory.currentSession();
 			Query bla = session.createQuery(queryString);
 			bla.setParameter("stDate", startDate, TemporalType.DATE);
 			bla.setParameter("edDate", endDate, TemporalType.DATE);
 
 			permanentRes = bla.getResultList();
-			res= new HashMap<Book,Long>(permanentRes.size());
+			res = new HashMap<Book, Long>(permanentRes.size());
 			for (Object[] row : permanentRes) {
-			    Book book = (Book) row[0];
-			    Long timesPicked = (Long) row[1];
-			    res.put(book, timesPicked);}
-			
+				Book book = (Book) row[0];
+				Long timesPicked = (Long) row[1];
+				res.put(book, timesPicked);
+			}
+
 		} catch (ParseException | NullPointerException e) {
-			
+
 			System.out.println("Wrong Input");
 			e.printStackTrace();
 		} finally {
@@ -275,29 +267,47 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer>implements BookDAO
 			}
 		}
 		return res;
+
 	}
-	public List<Book> getBookInfo(int BookId){
-		
-		Session session=null;
+
+	public long countInstances(String bookName) {
+		Session session = null;
+
+		String queryString = "select count(*) BookInstance bi inner join bi.book " + "where bi.book.name =:bookname";
+		Long available;
+		try {
+
+			session = HibernateSessionFactory.currentSession();
+			Query query = session.createQuery(queryString);
+			query.setParameter("bookname", bookName);
+			available = (Long) query.getSingleResult();
+
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				HibernateSessionFactory.closeSession();
+			}
+		}
+		return available;
+	}
+
+	public List<Book> getBookInfo(int BookId) {
+
+		Session session = null;
 		List<Book> res;
-		String queryString="select rs.bookInstance.book from ReadSession rs inner join rs.bookInstance "
-				+ "inner join rs.bookInstance.book "
-				+ "where rs.bookInstance.book.id= :idbook";
-		
+		String queryString = "select rs.bookInstance.book from ReadSession rs inner join rs.bookInstance "
+				+ "inner join rs.bookInstance.book " + "where rs.bookInstance.book.id= :idbook";
+
 		try {
 
 			session = HibernateSessionFactory.currentSession();
 			Query bla = session.createQuery(queryString);
 			bla.setParameter("idbook", BookId);
 			res = (List<Book>) bla.getResultList();
-
 		} finally {
 			if ((session != null) && (session.isOpen())) {
 				HibernateSessionFactory.closeSession();
 			}
 		}
 		return res;
-		
 	}
-
 }

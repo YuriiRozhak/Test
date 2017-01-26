@@ -25,9 +25,9 @@ public class BookInstanceDAOImpl extends GenericDAOImpl<BookInstance, Integer> i
 		try {
 
 			session = HibernateSessionFactory.currentSession();
-			Query bla = session.createQuery(queryString);
-			bla.setParameter("bookInstanceid", bookInstanceID);
-			res = (Double) bla.getSingleResult();
+			Query query = session.createQuery(queryString);
+			query.setParameter("bookInstanceid", bookInstanceID);
+			res = (Double) query.getSingleResult();
 
 		} finally {
 			if ((session != null) && (session.isOpen())) {
@@ -47,9 +47,9 @@ public class BookInstanceDAOImpl extends GenericDAOImpl<BookInstance, Integer> i
 		try {
 
 			session = HibernateSessionFactory.currentSession();
-			Query bla = session.createQuery(queryString);
-			bla.setParameter("bookinstanceid", bookInstanceId);
-			res = (Long) bla.getSingleResult();
+			Query query = session.createQuery(queryString);
+			query.setParameter("bookinstanceid", bookInstanceId);
+			res = (Long) query.getSingleResult();
 
 		} finally {
 			if ((session != null) && (session.isOpen())) {
@@ -58,5 +58,29 @@ public class BookInstanceDAOImpl extends GenericDAOImpl<BookInstance, Integer> i
 		}
 		return res;
 	}
+	
+	public boolean isAvailable(Integer bookInstanceId) {
+		Session session = null;
+
+		String queryString = "select count(*) from ReadSession rs " 
+				+ "inner join rs.bookInstance " 
+				+ "where readsession.bookInstance.id =:bookinstanceid and rs.returnDate is null";
+		boolean available;
+		try {
+
+			session = HibernateSessionFactory.currentSession();
+			Query query = session.createQuery(queryString);
+			query.setParameter("bookinstanceid", bookInstanceId);
+			available = !((Long) query.getSingleResult() > 0);
+
+		} finally {
+			if ((session != null) && (session.isOpen())) {
+				HibernateSessionFactory.closeSession();
+			}
+		}
+		return available;
+	}
+	
+	
 
 }
