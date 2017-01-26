@@ -5,7 +5,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import java.util.List;
 
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
@@ -159,4 +159,23 @@ public double avgRequestByPeriod(String startDate, String endDate){
 		}
 		return res;
 	} 
+	//7
+	public List<User> getDebtors(){
+		  Session session = null;
+		  String queryString = "select distinct rs.user from ReadSession rs "
+		    + "inner join rs.user "
+		    + "where rs.returnDate is null ";
+		  List<User> res;
+		  
+		  try {
+		   session = HibernateSessionFactory.currentSession();
+		   Query bla = session.createQuery(queryString);
+		   res = bla.getResultList();
+		  } finally {
+		   if ((session != null) && (session.isOpen())) {
+		    HibernateSessionFactory.closeSession();
+		   }
+		  }
+		  return res;
+		 }
 }
