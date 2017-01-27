@@ -2,6 +2,7 @@ package com.softserve.lv219.hiberlibrary.dao;
 
 import java.text.DateFormat;
 import java.text.ParseException;import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -165,8 +166,10 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer>implements BookDAO
 		return res;
 	}
 
-	public List<Book> booksIndependanceInstances(String date) {
-
+	public List<Book> booksIndependanceInstances() {
+		
+		String date="1994-08-26";
+		
 		Session session = null;
 
 		String queryString = "from Book book  " + "where book.publishDate > :date ";
@@ -195,9 +198,9 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer>implements BookDAO
 	}
 
 	// 6
-	public Map<Book, Long> getPopular(String startDateString, String endDateString) {
-		Map<Book, Long> res = null;
-		List<Object[]> permanentRes = null;
+	public List<Object []> getPopular(String startDateString, String endDateString) {
+		
+		List<Object[]> res = null;
 		Session session = null;
 		String queryString = "select rs.bookInstance.book, "
 				+ "count(rs.bookInstance.id) as times from ReadSession rs inner join rs.bookInstance"
@@ -212,13 +215,8 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer>implements BookDAO
 			bla.setParameter("stDate", startDate, TemporalType.DATE);
 			bla.setParameter("edDate", endDate, TemporalType.DATE);
 
-			permanentRes = bla.getResultList();
-			res = new HashMap<Book, Long>(permanentRes.size());
-			for (Object[] row : permanentRes) {
-				Book book = (Book) row[0];
-				Long timesPicked = (Long) row[1];
-				res.put(book, timesPicked);
-			}
+			res = bla.getResultList();
+			
 
 		} catch (ParseException | NullPointerException e) {
 
@@ -232,9 +230,9 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer>implements BookDAO
 		return res;
 	}
 
-	public Map<Book, Long> getNotPopular(String startDateString, String endDateString) {
-		Map<Book, Long> res = null;
-		List<Object[]> permanentRes = null;
+	public List<Object []> getNotPopular(String startDateString, String endDateString) {
+	
+		List<Object[]> res = null;
 		Session session = null;
 		String queryString = "select rs.bookInstance.book, "
 				+ "count(rs.bookInstance.id) as times from ReadSession rs inner join rs.bookInstance"
@@ -249,16 +247,9 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer>implements BookDAO
 			bla.setParameter("stDate", startDate, TemporalType.DATE);
 			bla.setParameter("edDate", endDate, TemporalType.DATE);
 
-			permanentRes = bla.getResultList();
-			res = new HashMap<Book, Long>(permanentRes.size());
-			for (Object[] row : permanentRes) {
-				Book book = (Book) row[0];
-				Long timesPicked = (Long) row[1];
-				res.put(book, timesPicked);
-			}
+			res = bla.getResultList();
 
 		} catch (ParseException | NullPointerException e) {
-
 			System.out.println("Wrong Input");
 			e.printStackTrace();
 		} finally {
@@ -310,4 +301,5 @@ public class BookDAOImpl extends GenericDAOImpl<Book, Integer>implements BookDAO
 		}
 		return res;
 	}
+
 }

@@ -19,11 +19,13 @@ public interface BookDAO extends GenericDAO<Book, Integer> {
 	
 	public List<Book> bookByCoAuthor(int i);
 	
-	public List<Book> booksIndependanceInstances(String date);
+	public List<Book> booksIndependanceInstances();
 	
-	public Map<Book, Long> getPopular(String startDate, String endDate);
+	public List<Object[]> getPopular(String startDate, String endDate);
 	
-	public Map<Book, Long> getNotPopular(String startDateString, String endDateString);
+	public List<Object[]> getNotPopular(String startDateString, String endDateString);
 	
 	public List<Book> getBookInfo(int BookId);
+	
+	public long countInstances(String bookName);
 }

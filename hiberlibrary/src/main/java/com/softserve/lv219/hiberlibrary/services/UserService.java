@@ -50,6 +50,14 @@ public class UserService {
 		Long roundedResult = Math.round(result);
 		return roundedResult;
 	}
+	public List<Book> booksWasTaken(Integer userId){
+		List<Book> takenBooks = DAOFactory.getInstance().getUserDAO().booksWasTaken(3);
+		return takenBooks;
+	}
+	public List<Book> booksWasNotReturned(Integer userId){
+		List<Book> notReturnedBook = DAOFactory.getInstance().getUserDAO().booksWasNotReturned(2);
+		return notReturnedBook;
+	}
 	
 	public void addUser(User user){
 		DAOFactory.getInstance().getUserDAO().addElement(user);
